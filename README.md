@@ -23,22 +23,7 @@ P.S: НИ В КОЕМ СЛУЧАЕ ЭТА РАБОТА И ВСЕ ПОСЛЕДУ�
 
 ## Структура проекта
 
-├── WebServer/
-│ ├── bin/
-│ └──├── ...
-│ ├── obj/
-│ └──├── ...
-│ ├── Properties/
-│ └──├── ...
-│ └── Program.cs
-│ ├── WebServer.csproj
-│ ├── appsettings.Development.json
-│ ├── appsettings.json
-├── img/ 
-│ ├── ...
-├── .gitignore
-├── .editorconfig
-└── README.md
+![структура](img\struct.png)
 
 
 ## Список реализованных маршрутов (финальное приложение)
