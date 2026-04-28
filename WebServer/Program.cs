@@ -4,6 +4,41 @@ var builder = WebApplication.CreateBuilder(args);
 //Сборка приложения
 var app = builder.Build();
 
+//Middleware проверка ключа
+app.Use(async (context, next) =>
+{
+    //Получаем параметр "key" из строки запроса
+    var key = context.Request.Query["key"];
+
+    if (key != "secret")
+    {
+        //Ключ отсутствует или неверный → 401 Unauthorized
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        await context.Response.WriteAsync(
+            "Похоже, на этом сайте есть проблема\n" +
+            "Код ошибки: 401 Unauthorized\n" +
+            "Проверьте, правильно ли вы ввели адрес веб-сайта."
+        );
+        return; //прерываем цепочку middleware
+    }
+
+    //Ключ верный → передаём управление дальше
+    await next(context);
+});
+
+//Логирование запросов
+app.Use(async (context, next) => {
+   Console.WriteLine($"[LOG] {context.Request.Method} {context.Request.Path}");
+   await next(context);
+   Console.WriteLine($"[LOG] Ответ отправлен: {context.Response.StatusCode}"); 
+});
+
+//Добавляем заголовок в ответ
+app.Use(async (context, next) => {
+    context.Response.Headers.Append("X-Powered-By", "ASP.NET Core lab27");
+    await next(context);
+});
+
 //Регистрация маршрута
 app.MapGet("/", () => "Добро пожаловать на сервер!");
 
